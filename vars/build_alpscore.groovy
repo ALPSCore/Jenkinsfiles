@@ -15,7 +15,6 @@ def make_stage(String title, String comp, String lib) {
                     }
                     stage ("Configure") {
                         sh """${shell_script}
-mkdir build && cd build
 cmake .. \
       -DCMAKE_INSTALL_PREFIX=\$PWD/installed \
       -DTesting=ON -DExtensiveTesting=OFF \
@@ -28,24 +27,21 @@ cmake .. \
                     }
                     stage ("Build") {
                         sh """${shell_script}
-cd build
 make -j4
 """
                     }
                     stage ("Test") {
                         sh """${shell_script}
-cd build
 make test
 """
-                        junit "build/*/test/*.xml"
+                        junit "*/test/*.xml"
                     }
                     stage ("Install") {
                         sh """${shell_script}
-cd build
 make -j4 install
 """
                         zip(archive: true,
-                            dir: "build/installed",
+                            dir: "installed",
                             glob: '',
                             zipFile: "alpscore_${dirname}.zip")
                         fingerprint "alpscore_${dirname}.zip"
