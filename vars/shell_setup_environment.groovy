@@ -1,5 +1,6 @@
 def call(String compiler, String mpilib) {
     def script = '''
+module() { echo "Called module $@"; }
 module purge
 module add cmake
 '''
@@ -38,5 +39,6 @@ export CXX=/opt/intel/bin/icpc
         default:
             error "Do not know how to handle compiler ${compiler}"
     }
-    script
+    echo "DEBUG: "
+    return script
 }
