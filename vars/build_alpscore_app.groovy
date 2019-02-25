@@ -23,11 +23,11 @@ def make_stage(String title, String comp, String lib, Map alpscore_loc) {
                     stage ("Obtain ALPSCore artifact") {
                         copyArtifacts(projectName: alpscore_loc.project,
                                       selector: lastSuccessful(),
-                                      filter:alpscore_loc.artifact,
+                                      filter:"${alpscore_loc.artifact}",
                                       fingerprintArtifacts: true,
-                                      optional: true)
+                                      optional: false)
 
-                        sh "unzip ${alpscore} -d alpscore/"
+                        sh "unzip ${alpscore_loc.artifact} -d alpscore/"
                     }
                     stage ("Configure") {
                         sh """${shell_script}
@@ -70,7 +70,7 @@ def run_build_steps(String compilers_str, String mpilibs_str, String alpscore_pr
     def alpscore_loc = [ project: alpscore_project ]
     for (comp in compilers) {
         for (lib in mpilibs) {
-            alpscore_loc.artifact = "alpcore_${get_suffix(comp, lib)}.zip"
+            alpscore_loc.artifact = "alpscore_${get_label(comp, lib)}.zip"
             def this_stage = make_stage("${comp} ${lib}", comp, lib, alpscore_loc)
             this_stage() // or save it and run in parallel later!
         }
