@@ -3,6 +3,8 @@ def call(String compiler, String mpilib) {
 module() { echo "Called module $@"; }
 module purge
 module add cmake
+# EIGEN3_INCLUDE_DIR=$HOME/.local/packages/eigen-3.3.4
+EIGEN3_INCLUDE_DIR=/usr/local/eigen/eigen_3.3.4
 '''
 
     switch (mpilib) {
