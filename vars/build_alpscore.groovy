@@ -5,7 +5,7 @@
 def make_stage(String title, String comp, String lib) {
     def dirname = "compiler=${comp}_mpilib=${lib}"
 
-    { ->
+    return { ->
         stage ("Building ${title}") {
             def shell_script=shell_setup_environment(comp, lib)
             node {
