@@ -8,7 +8,9 @@ def make_stage(String title, String comp, String lib) {
     return { ->
         stage ("Building ${title}") {
             def shell_script=shell_setup_environment(comp, lib)
+            stash dirname // FIXME: it may be better to checkout on the node instead
             node {
+                unstash dirname // FIXME: it may be better to checkout here instead
                 dir (dirname) {
                     stage ("Clean working directory") {
                         sh 'rm -rf *'
