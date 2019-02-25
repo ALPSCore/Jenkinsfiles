@@ -13,7 +13,7 @@ def make_stage(String title, String comp, String lib) {
                 unstash dirname // FIXME: it may be better to checkout here instead
                 dir (dirname) {
                     stage ("Clean working directory") {
-                        sh 'rm -rf *'
+                        sh 'echo rm -rf *'
                     }
                     stage ("Configure") {
                         sh """${shell_script}
