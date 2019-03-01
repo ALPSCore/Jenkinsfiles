@@ -4,6 +4,7 @@
 
 def make_stage(String title, String comp, String lib) {
     def dirname = "compiler=${comp}_mpilib=${lib}"
+    def archive = "alpscore_${dirname}.zip"
 
     return { ->
         stage ("Building ${title}") {
@@ -40,13 +41,14 @@ make test
                     }
                     stage ("Install") {
                         sh """${shell_script}
+rm -rf ${archive}
 make -j4 install
 """
                         zip(archive: true,
                             dir: "installed",
                             glob: '',
-                            zipFile: "alpscore_${dirname}.zip")
-                        fingerprint "alpscore_${dirname}.zip"
+                            zipFile: archive)
+                        fingerprint archive
                     }
                 } // end dirname
             } // end node
