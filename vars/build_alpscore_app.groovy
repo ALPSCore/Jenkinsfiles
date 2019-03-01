@@ -91,7 +91,7 @@ def call(Map args) {
                    defaultValue: mpilibs)
             string(name: 'ALPSCORE_PROJECT',
                    description: 'Project to copy ALPSCore installation from',
-                   defaultValue: 'workflow-test1/job/use_shared_lib')
+                   defaultValue: 'ALPSCore_local/issue.jenkins_pipeline_library')
             
         }
         stages {
