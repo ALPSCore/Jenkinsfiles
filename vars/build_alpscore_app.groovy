@@ -30,6 +30,7 @@ def make_stage(String title, String comp, String lib, Map alpscore_loc) {
                         sh "unzip ${alpscore_artifact} -d alpscore/"
                     }
                     stage ("Configure") {
+                        // FIXME:make shell scripts customizable
                         sh """${shell_script}
 export ALPSCore_DIR=\$PWD/alpscore
 cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=\$PWD/installed -DTestXMLOutput=ON
@@ -44,7 +45,7 @@ make -j4
                         sh """${shell_script}
 make test
 """
-                        junit "*/test/*.xml"
+                        junit "test/*.xml" // FIXME:make test location customizable
                     }
                     stage ("Install") {
                         sh """${shell_script}
