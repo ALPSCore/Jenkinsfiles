@@ -7,7 +7,9 @@ def get_label(String comp, String lib) {
 def make_stage(String title, String comp, String lib, Map alpscore_loc) {
     def dirname = get_label(comp, lib)
     def archive = "${dirname}_installed.zip"
-
+    // These variables must be made local to bind to the closure:
+    def alpscore_artifact = alpscore_loc.artifact
+    def alpscore_project = alpscore_loc.project
     return { ->
         stage ("Building ${title}") {
             def shell_script=shell_setup_environment(comp, lib)
@@ -19,13 +21,13 @@ def make_stage(String title, String comp, String lib, Map alpscore_loc) {
                         sh 'rm -rf *'
                     }
                     stage ("Obtain ALPSCore artifact") {
-                        copyArtifacts(projectName: alpscore_loc.project,
+                        copyArtifacts(projectName: alpscore_project,
                                       selector: lastSuccessful(),
-                                      filter:"${alpscore_loc.artifact}",
+                                      filter: alpscore_artifact,
                                       fingerprintArtifacts: true,
                                       optional: false)
 
-                        sh "unzip ${alpscore_loc.artifact} -d alpscore/"
+                        sh "unzip ${alpscore_artifact} -d alpscore/"
                     }
                     stage ("Configure") {
                         sh """${shell_script}
