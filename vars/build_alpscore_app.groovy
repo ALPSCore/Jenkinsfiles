@@ -1,7 +1,5 @@
 /* Build an app that needs ALPSCore */
 
-// @Library('alpscore_jenkins_pipeline') _
-
 def get_label(String comp, String lib) {
     "compiler=${comp}_mpilib=${lib}"
 }

@@ -41,6 +41,5 @@ export CXX=/opt/intel/bin/icpc
         default:
             error "Do not know how to handle compiler ${compiler}"
     }
-    echo "DEBUG: "
     return script
 }
