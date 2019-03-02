@@ -66,13 +66,19 @@ def run_build_steps(String compilers_str, String mpilibs_str, String alpscore_pr
     def compilers = compilers_str.tokenize(" ");
     def mpilibs = mpilibs_str.tokenize(" ");
     def alpscore_loc = [ project: alpscore_project ]
+    def par_jobs = [:]
     for (comp in compilers) {
         for (lib in mpilibs) {
             alpscore_loc.artifact = "alpscore_${get_label(comp, lib)}.zip"
             def this_stage = make_stage("${comp} ${lib}", comp, lib, alpscore_loc)
-            this_stage() // or save it and run in parallel later!
+            // Sequential run:
+            // this_stage()
+            // Save for parallel run:
+            par_jobs[get_label(comp,lib)]=this_stage;
         }
     }
+    // Run saved jobs in parallel
+    parallel(par_jobs)
 }
 
 def call(Map args) {
