@@ -30,7 +30,7 @@ def make_stage(String title, String comp, String lib, Map alpscore_loc) {
                     stage ("Configure") {
                         sh """${shell_script}
 export ALPSCore_DIR=\$PWD/alpscore
-cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=\$PWD/installed
+cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=\$PWD/installed -DTestXMLOutput=ON
 """
                     }
                     stage ("Build") {
