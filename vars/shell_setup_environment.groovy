@@ -5,7 +5,7 @@ module add cmake
 EIGEN3_INCLUDE_DIR=$HOME/.local/packages/eigen-3.3.4
 # EIGEN3_INCLUDE_DIR=/usr/local/eigen/eigen_3.3.4
 export BOOST_ROOT=/opt/ohpc/pub/libs/gnu/openmpi/boost/1.66.0
-make_jobs=4
+make_jobs=8
 '''
 
     switch (mpilib) {
