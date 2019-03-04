@@ -7,9 +7,11 @@ def get_label(String comp, String lib) {
 def make_stage(String title, String comp, String lib, Map alpscore_loc) {
     def dirname = get_label(comp, lib)
     def archive = "${dirname}_installed.zip"
+
     // These variables must be made local to bind to the closure:
     def alpscore_artifact = alpscore_loc.artifact
     def alpscore_project = alpscore_loc.project
+
     return { ->
         stage ("Building ${title}") {
             def shell_script=shell_setup_environment(comp, lib)
@@ -30,7 +32,6 @@ def make_stage(String title, String comp, String lib, Map alpscore_loc) {
                         sh "unzip ${alpscore_artifact} -d alpscore/"
                     }
                     stage ("Configure") {
-                        // FIXME:make shell scripts customizable
                         sh """${shell_script}
 export ALPSCore_DIR=\$PWD/alpscore
 cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=\$PWD/installed -DTestXMLOutput=ON
@@ -38,19 +39,19 @@ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=\$PWD/installed -DTestX
                     }
                     stage ("Build") {
                         sh """${shell_script}
-make -j4
+make -j\$make_jobs
 """
                     }
                     stage ("Test") {
                         sh """${shell_script}
 make test
 """
-                        junit "test/*.xml" // FIXME:make test location customizable
+                        junit "**/test*/*.xml" // FIXME:make test location customizable
                     }
                     stage ("Install") {
                         sh """${shell_script}
 rm -rf ${archive}
-make -j4 install
+make -j\$make_jobs install
 """
                         zip(archive: true,
                             dir: "installed",
