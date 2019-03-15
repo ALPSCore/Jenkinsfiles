@@ -57,11 +57,13 @@ make -j4 install
     } // end closure
 }
 
-def run_build_steps(String compilers_str, String mpilibs_str) {
+def run_build_steps(String compilers_str, String mpilibs_str, String skips_str) {
     def compilers = compilers_str.tokenize(" ");
     def mpilibs = mpilibs_str.tokenize(" ");
+    def skips = skips_str.tokenize(" ");
     for (comp in compilers) {
         for (lib in mpilibs) {
+            if ((comp+':'+lib) in skips) { continue }
             def this_stage = make_stage("${comp} ${lib}", comp, lib)
             this_stage() // or save it and run in parallel later!
         }
@@ -71,6 +73,8 @@ def run_build_steps(String compilers_str, String mpilibs_str) {
 def call(Map args) {
     def compilers = args.compilers;
     def mpilibs = args.mpilibs;
+    // FIXME: this should be in a separate configuration file:
+    def skips = args.skip?:'gcc_4.8.5:OpenMPI clang_3.4.2:OpenMPI clang_5.0.1:OpenMPI intel_18.0.5:OpenMPI';
     pipeline {
         agent any
         parameters {
@@ -80,12 +84,16 @@ def call(Map args) {
             string(name: 'MPILIBS',
                    description: 'MPI libraries to use',
                    defaultValue: mpilibs)
+            string(name: 'SKIP',
+                   description: 'Compiler:MPI pairs to skip',
+                   defaultValue: skips
+            )
         }
         stages {
             stage ('Multistage') {
                 steps {
                     script {
-                        run_build_steps(params.COMPILERS, params.MPILIBS)
+                        run_build_steps(params.COMPILERS, params.MPILIBS, params.SKIPS)
                     }
                 }
             }
