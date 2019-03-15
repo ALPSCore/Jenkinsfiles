@@ -93,7 +93,7 @@ def call(Map args) {
             stage ('Multistage') {
                 steps {
                     script {
-                        run_build_steps(params.COMPILERS, params.MPILIBS, params.SKIPS)
+                        run_build_steps(params.COMPILERS, params.MPILIBS, params.SKIP)
                     }
                 }
             }
