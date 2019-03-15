@@ -8,19 +8,6 @@ EIGEN3_INCLUDE_DIR=/usr/local/eigen/eigen_3.3.4
 make_jobs=4
 '''
 
-    switch (mpilib) {
-        case 'MPI_OFF':
-            script += 'ENABLE_MPI=OFF'
-            break
-        case 'OpenMPI':
-            script += 'ENABLE_MPI=ON; module add openmpi/1.10.7'
-            break
-        default:
-            error "Do not know how to handle MPI library ${mpilib}"
-    }
-
-    script += "\n"
-
     switch (compiler) {
         case "gcc_5.4.0":
             script += 'module add gnu/5.4.0; '
@@ -41,6 +28,19 @@ export CXX=/opt/intel/bin/icpc
 '''
         default:
             error "Do not know how to handle compiler ${compiler}"
+    }
+
+    script += "\n"
+
+    switch (mpilib) {
+        case 'MPI_OFF':
+            script += 'ENABLE_MPI=OFF'
+            break
+        case 'OpenMPI':
+            script += 'ENABLE_MPI=ON; module add openmpi/1.10.7'
+            break
+        default:
+            error "Do not know how to handle MPI library ${mpilib}"
     }
     return script
 }
