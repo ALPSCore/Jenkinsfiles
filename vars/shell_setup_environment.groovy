@@ -22,10 +22,11 @@ make_jobs=4
             script += 'export CC=$(which clang); export CXX=$(which clang++); '
             break
         case "intel_18.0.5":
-            script += '''. /opt/intel/bin/compilervars.sh intel64
-export CC=/opt/intel/bin/icc
-export CXX=/opt/intel/bin/icpc
+            script += '''module add Intel/2018.5.274
+export CC=$(which icc)
+export CXX=$(which icpc)
 '''
+            break
         default:
             error "Do not know how to handle compiler ${compiler}"
     }
