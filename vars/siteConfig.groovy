@@ -3,7 +3,7 @@
 // Base configuration shell script
 @groovy.transform.Field
 def initShell = '''
-module() { echo "Called module $@"; }
+module() { echo "Called module $@" >&2; }
 module purge
 module add cmake
 export BOOST_ROOT=$(module purge; module add gnu openmpi boost; echo $BOOST_ROOT)
