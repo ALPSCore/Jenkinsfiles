@@ -3,12 +3,11 @@
 // Base configuration shell script
 @groovy.transform.Field
 def initShell = '''
-module() { echo "Called module $@" >&2; }
 module purge
 module add cmake
 export BOOST_ROOT=$(module purge; module add gnu openmpi boost; echo $BOOST_ROOT)
-# EIGEN3_INCLUDE_DIR=$HOME/.local/packages/eigen-3.3.4
-EIGEN3_INCLUDE_DIR=/usr/local/eigen/eigen_3.3.4
+EIGEN3_INCLUDE_DIR=$HOME/.local/packages/eigen-3.3.4
+# EIGEN3_INCLUDE_DIR=/usr/local/eigen/eigen_3.3.4
 make_jobs=4
 '''
 
