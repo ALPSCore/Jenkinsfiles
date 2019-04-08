@@ -71,10 +71,10 @@ def run_build_steps(String compilers_str, String mpilibs_str, String skips_str) 
 }
 
 def call(Map args) {
-    def compilers = args.compilers;
-    def mpilibs = args.mpilibs;
-    // FIXME: this should be in a separate configuration file:
-    def skips = args.skip?:'gcc_4.8.5:OpenMPI clang_3.4.2:OpenMPI clang_5.0.1:OpenMPI intel_18.0.5:OpenMPI';
+    if (args==null) { args=[:] }
+    def compilers = args.compilers ?: siteConfig.compilers.keySet().join(" ");
+    def mpilibs = args.mpilibs ?: siteConfig.mpiLibs.keySet().join(" ");
+    def skips = args.skip ?: siteConfig.skipConfigs;
     pipeline {
         agent any
         parameters {
