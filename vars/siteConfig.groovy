@@ -34,3 +34,6 @@ def mpiLibs = [
 def extraLibs = [
     'gsl' : 'export GSL_ROOT_DIR=$(module purge; module add gnu gsl; echo $GSL_DIR)',
 ];
+
+@groovy.transform.Field
+def skipConfigs='gcc_4.8.5:OpenMPI clang_3.4.2:OpenMPI clang_5.0.1:OpenMPI intel_18.0.5:OpenMPI';
